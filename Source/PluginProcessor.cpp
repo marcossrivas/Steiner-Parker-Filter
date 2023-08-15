@@ -33,8 +33,20 @@ void MyResonatorAudioProcessor::initializeDSP()
 {
     for (int i = 0; i < getTotalNumOutputChannels(); i++)
     {
-        ptrFilter[i] = std::unique_ptr<SteinerParkerFilter>(new SteinerParkerFilter());
+
+        //phaser all stages 
+        ptrPhaser[i] = std::unique_ptr<Phaser>(new Phaser());
+        ptrPhaser2[i] = std::unique_ptr<Phaser>(new Phaser());
+        ptrPhaser3[i] = std::unique_ptr<Phaser>(new Phaser());
+        ptrPhaser4[i] = std::unique_ptr<Phaser>(new Phaser());
+
+        //ptrFilter[i] = std::unique_ptr<SteinerParkerFilter>(new SteinerParkerFilter());
+        
+      
         //ptrNoise[i] = std::unique_ptr<WhiteNoise>(new WhiteNoise());
+
+        ptrVolume[i] = std::unique_ptr<VolumeMixer>(new VolumeMixer());
+
 
     }
 
@@ -45,12 +57,24 @@ juce::AudioProcessorValueTreeState::ParameterLayout MyResonatorAudioProcessor::i
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
+    //phaser
 
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("reso_ID", "resonance", 0.85f, 2.48f, 0.85f));//2.48 firme
 
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("gain_ID", "gain", 1.0f, 10.0f, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("LFO_ID", "lfo", 0.01f, 0.42f, 0.42f));
 
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("cutoff_ID", "cutoff", 1.2f, 200.0f, 200.0f));
+    //volume mix 
+
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("mixPhaser_ID", "mix", 0.1f, 1.0f, 0.1f));
+
+    //filter
+    
+
+    //params.push_back(std::make_unique<juce::AudioParameterFloat>("reso_ID", "resonance", 0.85f, 2.48f, 0.85f));//2.48 firme
+
+    //params.push_back(std::make_unique<juce::AudioParameterFloat>("gain_ID", "gain", 1.0f, 10.0f, 1.0f));
+
+    //params.push_back(std::make_unique<juce::AudioParameterFloat>("cutoff_ID", "cutoff", 1.2f, 200.0f, 200.0f));
 
 
 
@@ -169,13 +193,30 @@ void MyResonatorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    //buffer for phaser processing 
+
+    juce::AudioBuffer<float> PhaserBuffer(totalNumInputChannels, buffer.getNumSamples());
+    PhaserBuffer.clear();
+
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
+
         auto* channelData = buffer.getWritePointer (channel);
+
+       
 
        //ptrNoise[channel]->processSample(channelData, channelData, buffer.getNumSamples());
 
-       ptrFilter[channel]->processFilter(channelData, channelData, buffer.getNumSamples(), getSampleRate(), *parameters.getRawParameterValue("reso_ID"), *parameters.getRawParameterValue("cutoff_ID"), *parameters.getRawParameterValue("gain_ID"));
+       //ptrFilter[channel]->processFilter(channelData, channelData, buffer.getNumSamples(), getSampleRate(), *parameters.getRawParameterValue("reso_ID"), *parameters.getRawParameterValue("cutoff_ID"), *parameters.getRawParameterValue("gain_ID"));
+
+        ptrPhaser[channel]->processphaser(channelData, PhaserBuffer.getWritePointer(channel), buffer.getNumSamples(), getSampleRate(), *parameters.getRawParameterValue("LFO_ID"), *parameters.getRawParameterValue("mixPhaser_ID"));
+        ptrPhaser2[channel]->processphaser(PhaserBuffer.getWritePointer(channel), PhaserBuffer.getWritePointer(channel), buffer.getNumSamples(), getSampleRate(), *parameters.getRawParameterValue("LFO_ID"), *parameters.getRawParameterValue("mixPhaser_ID"));
+        ptrPhaser3[channel]->processphaser(PhaserBuffer.getWritePointer(channel), PhaserBuffer.getWritePointer(channel), buffer.getNumSamples(), getSampleRate(), *parameters.getRawParameterValue("LFO_ID"), *parameters.getRawParameterValue("mixPhaser_ID"));
+        ptrPhaser4[channel]->processphaser(PhaserBuffer.getWritePointer(channel), PhaserBuffer.getWritePointer(channel), buffer.getNumSamples(), getSampleRate(), *parameters.getRawParameterValue("LFO_ID"), *parameters.getRawParameterValue("mixPhaser_ID"));
+        
+        ptrVolume[channel]->processVolume(channelData, PhaserBuffer.getWritePointer(channel), channelData, buffer.getNumSamples(), getSampleRate(), *parameters.getRawParameterValue("mixPhaser_ID"));
+      
     }
 }
 

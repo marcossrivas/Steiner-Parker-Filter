@@ -11,6 +11,8 @@
 #include <JuceHeader.h>
 #include "SteinerParkerFilter.h"
 #include "WhiteNoise.h"
+#include "Phaser.h"
+#include "VolumeMixer.h"
 
 //==============================================================================
 /**
@@ -65,7 +67,11 @@ public:
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MyResonatorAudioProcessor)
-    std::unique_ptr<SteinerParkerFilter> ptrFilter[2]; 
+    //std::unique_ptr<SteinerParkerFilter> ptrFilter[2]; 
     //std::unique_ptr<WhiteNoise> ptrNoise[2];
-
+    std::unique_ptr<Phaser> ptrPhaser[2];
+    std::unique_ptr<Phaser> ptrPhaser2[2];
+    std::unique_ptr<Phaser> ptrPhaser3[2];
+    std::unique_ptr<Phaser> ptrPhaser4[2];
+    std::unique_ptr<VolumeMixer> ptrVolume[2];
 };
