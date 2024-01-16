@@ -2,31 +2,22 @@
 #include "JuceHeader.h"
 #include "cmath"
 
-
 class SteinerParkerFilter
 {
-	public:
-		SteinerParkerFilter();
+public:
 
-		~SteinerParkerFilter();
+	SteinerParkerFilter();
 
-		float dvc1(float input, float vC1, float vC2, float reso, float cutoff);
-		float dvc2(float input, float vC1, float vC2, float reso, float cutoff);
+	~SteinerParkerFilter();
 
-		void processFilter(float* InAudio, float* OutAudio, float samplestoRender, double fs, float reso, float cutoff, float gain);
+	float dvc1(float input, float vC1, float vC2, float reso, float cutoff);
+	float dvc2(float input, float vC1, float vC2, float reso, float cutoff);
 
-	private:
+	void processFilter(float* InAudio, float* OutAudio, float samplesToRender, double fs, float reso, float cutoff, float gain);
 
-		float h;
+private:
 
-		//Circuit parmeters
-
-
-		//aux variables for each filter
-		float vC1{ 0.0f };
-		float vC2{ 0.0f };
-
-	};
-
-
-
+	float h{ 0.0f };
+	float vC1{ 0.0f };
+	float vC2{ 0.0f };
+};

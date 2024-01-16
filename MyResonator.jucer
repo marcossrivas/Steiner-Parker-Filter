@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="f7pJJ5" name="MyResonator" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
-  <MAINGROUP id="LljTor" name="MyResonator">
+<JUCERPROJECT id="f7pJJ5" name="SteinerParkerFilter" projectType="audioplug"
+              useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
+              jucerFormatVersion="1">
+  <MAINGROUP id="LljTor" name="SteinerParkerFilter">
     <GROUP id="{6247E46F-DB96-1125-8ACD-49A04849352F}" name="Source">
       <FILE id="YEq0kE" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
@@ -12,6 +13,10 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="asCPB1" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
+    <FILE id="DKf5gf" name="SteinerParkerFilter.cpp" compile="1" resource="0"
+          file="Source/SteinerParkerFilter.cpp"/>
+    <FILE id="OF9hO3" name="SteinerParkerFilter.h" compile="0" resource="0"
+          file="Source/SteinerParkerFilter.h"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
