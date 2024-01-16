@@ -1,3 +1,2 @@
-Linear Analog Modeling 
-Steiner Parker Filter
+Linear Analog Modeling. Steiner Parker Filter
  
