@@ -1,4 +1,3 @@
 Linear Analog Modeling 
--Phaser
--Steiner Parker Filter
+Steiner Parker Filter
  
