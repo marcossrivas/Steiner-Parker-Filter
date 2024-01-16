@@ -1,2 +1,4 @@
-Linear Analog Modeling. Steiner Parker Filter
+Linear Analog Modelling - Steiner-Parker Filter [ C++ JUCE ]
+
+
  
